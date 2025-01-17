@@ -91,8 +91,7 @@ def create_a_community(page, community_name, community_slug):
 def create_minimal_record(page, record_title):
     """Create a basic record."""
     # Upload
-    page.get_by_label("Quick create").click()
-    page.get_by_role("menuitem", name="New upload").click()
+    page.goto("https://inveniordm.web.cern.ch/uploads/new")
 
     # Title
     page.get_by_label("Title").fill(record_title)
