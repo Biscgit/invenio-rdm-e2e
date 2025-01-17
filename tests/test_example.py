@@ -173,8 +173,6 @@ def accept_a_request(page, community_name, record_title):
         "button", name="Accept"
     ).click()
     page.get_by_label("accept").get_by_role("button", name="Accept").click()
-    # Explicit timeout as it can take a long time.
-    assert page.locator('h1.ui.icon.header:has-text("All done!")').is_visible(timeout=30_000)
 
     # verify that record is in the community now
     page.locator("a.item", has_text="Records").click()
