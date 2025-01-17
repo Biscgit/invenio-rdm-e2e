@@ -29,7 +29,7 @@ jobs:
     - name: Run your tests
       run: pytest
       env:
-        E2E_USER1_EMAIL: ${{ secrets.E2E_USER1_EMAIL }}
+        E2E_USER1_EMAIL: "test_value"
         E2E_USER1_PASSWORD: ${{ secrets.E2E_USER1_PASSWORD }}
         E2E_USER2_EMAIL: ${{ secrets.E2E_USER2_EMAIL }}
         E2E_USER2_PASSWORD: ${{ secrets.E2E_USER2_PASSWORD }}
