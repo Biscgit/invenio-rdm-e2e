@@ -1,12 +1,12 @@
 FROM docker:27.5-cli
 
 ENV INVENIO_BRANCH="master"
+ENV PYTHON_VERSION="3.9"
 
 RUN apk add --update --no-cache \
     bash \
     build-base \
     cairo \
-    cmake \
     curl \
     gcc \
     git \
@@ -21,8 +21,8 @@ RUN apk add --update --no-cache \
 RUN curl -fsSL https://pyenv.run | bash
 ENV PATH="/root/.pyenv/bin/:$PATH"
 
-RUN pyenv install 3.9 && \
-    pyenv global 3.9 && \
+RUN pyenv install $PYTHON_VERSION && \
+    pyenv global $PYTHON_VERSION && \
     pyenv exec pip install setuptools invenio-cli
 
 WORKDIR /code
