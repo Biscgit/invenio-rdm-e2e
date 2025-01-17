@@ -15,22 +15,22 @@ def get_env_var(key):
 
 @pytest.fixture
 def user1_email():
-    get_env_var("E2E_USER1_EMAIL")
+    return get_env_var("E2E_USER1_EMAIL")
 
 
 @pytest.fixture
 def user1_password():
-    get_env_var("E2E_USER1_PASSWORD")
+    return get_env_var("E2E_USER1_PASSWORD")
 
 
 @pytest.fixture
 def user2_email():
-    get_env_var("E2E_USER2_EMAIL")
+    return get_env_var("E2E_USER2_EMAIL")
 
 
 @pytest.fixture
 def user2_password():
-    get_env_var("E2E_USER2_PASSWORD")
+    return get_env_var("E2E_USER2_PASSWORD")
 
 
 def test_inveniordm_login(page, user1_email, user1_password):
