@@ -4,12 +4,19 @@ from playwright.sync_api import expect
 
 
 def get_env_var(key):
+    error_msg = ""
     if key not in os.environ:
+        error_msg = f"Environment variable `{key}` not defined."
+    elif os.environ[key].strip() == "":
+        error_msg = f"Environment variable `{key}` defined but empty."
+
+    if error_msg:
         if os.environ.get("CI", "false") == "true":
             extra_info = "Please define CI secrets as described in the README file."
         else:
             extra_info = "Please create an `.env` file as described in the README file."
-        raise ValueError(f"Environment variable `{key}` not defined. {extra_info}")
+        raise ValueError(f"{error_msg} {extra_info}")
+
     return os.environ[key]
 
 
