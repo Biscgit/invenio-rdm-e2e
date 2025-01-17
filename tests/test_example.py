@@ -115,7 +115,7 @@ def create_minimal_record(page, record_title):
     with page.expect_file_chooser() as fc_info:
         page.get_by_role("button", name="Upload files", exact=True).click()
         file_chooser = fc_info.value
-        file_chooser.set_files("data/test_example.txt")
+        file_chooser.set_files("tests/data/test_example.txt")
     # Leave enough time for the upload to finish and for the progress bar to show the success (green) status.
     expect(page.locator(".progress.success")).to_be_visible(timeout=30_000)
 
@@ -181,43 +181,42 @@ def accept_a_request(page, community_name, record_title):
     assert page.locator(f'h2.header:has-text("{record_title}")').is_visible()
 
 
-def test_create_community_and_include_record_to_it(user1_email, user1_password, user2_email, user2_password):
+def test_create_community_and_include_record_to_it(
+    page, user1_email, user1_password, user2_email, user2_password
+):
     """Test create a community, create a record, create and accept an inclusion request."""
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        context = browser.new_context(
-            viewport={"width": 1500, "height": 1080}  # Set to a desktop resolution
-        )
-        page = context.new_page()
 
-        # login to the website
-        perform_login(page, user2_email, user2_password)
+    # Make the viewport big enough to have the desktop layout.
+    page.set_viewport_size({"width": 1500, "height": 1080})
 
-        # get to the create community form
-        page.locator('[id="quick-create-dropdown"]').click()
-        page.locator("#quick-create-menu >> text=New community").click()
-        community_slug = _generate_random_id()
-        community_name = f"Community Test Playwright {community_slug}"
-        create_a_community(page, community_name, community_slug)
+    # login to the website
+    perform_login(page, user2_email, user2_password)
 
-        # logout
-        perform_logout(page)
+    # get to the create community form
+    page.locator('[id="quick-create-dropdown"]').click()
+    page.locator("#quick-create-menu >> text=New community").click()
+    community_slug = _generate_random_id()
+    community_name = f"Community Test Playwright {community_slug}"
+    create_a_community(page, community_name, community_slug)
 
-        # login as a different user
-        perform_login(page, user1_email, user1_password)
+    # logout
+    perform_logout(page)
 
-        # create a record
-        record_title = "Playwright test"
-        create_minimal_record(page, record_title)
+    # login as a different user
+    perform_login(page, user1_email, user1_password)
 
-        # submit it to a community
-        submit_a_record_to_community(page, community_name)
+    # create a record
+    record_title = "Playwright test"
+    create_minimal_record(page, record_title)
 
-        # logout
-        perform_logout(page)
+    # submit it to a community
+    submit_a_record_to_community(page, community_name)
 
-        # login as a community owner
-        perform_login(page, user2_email, user2_password)
+    # logout
+    perform_logout(page)
 
-        # accept the community inclusion request
-        accept_a_request(page, community_name, record_title)
+    # login as a community owner
+    perform_login(page, user2_email, user2_password)
+
+    # accept the community inclusion request
+    accept_a_request(page, community_name, record_title)
