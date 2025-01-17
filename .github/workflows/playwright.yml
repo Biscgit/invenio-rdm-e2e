@@ -27,7 +27,7 @@ jobs:
     - name: Ensure browsers are installed
       run: python -m playwright install --with-deps
     - name: Run your tests
-      run: pytest --tracing=retain-on-failure
+      run: pytest
       env:
         E2E_USER1_EMAIL: ${{ secrets.E2E_USER1_EMAIL }}
         E2E_USER1_PASSWORD: ${{ secrets.E2E_USER1_PASSWORD }}
